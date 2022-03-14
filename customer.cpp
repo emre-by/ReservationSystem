@@ -14,7 +14,11 @@ Customer::Customer(const string& name, const string& phone, Customer* next)
 	// counter++;
 	// cout << "A new customer is created to the list, customer number: " << counter << endl;
 	// cout << "Pointer of this customer: " << CustomerList.at(0) << endl;
-	cout << "New Customer" << endl;
+	// cout << "New Customer" << endl;
+}
+
+Customer::~Customer() {
+	cout << "Deleting customer: " << name << endl;
 }
 
 string Customer::get_name() const {
@@ -26,12 +30,6 @@ Customer* Customer::get_next() const {
 }
 
 ostream& operator<<(ostream& out, const Customer& c) {
-	out << "name of customer: " << c.name << '\n' << "phone number: " << c.phone << endl;
+	out << c.name << ", phone: " << c.phone << endl;
 	return out;
 }
-
-/*
-Customer* searchCustomer(const string& name) {	
-	return nullptr;
-}
-*/

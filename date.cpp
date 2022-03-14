@@ -18,14 +18,15 @@ int Date::get_year() {
 }
 
 istream& operator>>(istream& is, Date& d) {
+	/*
 	cout << "Enter day: " << endl;
 	is >> d.day;
 	cout << "Enter month: " << endl;
 	is >> d.month;
 	cout << "Enter year: " << endl;
 	is >> d.year;
-
-	// is >> d.day >> d.month >> d.year;
+	*/
+	is >> d.day >> d.month >> d.year;
 	return is;
 }
 

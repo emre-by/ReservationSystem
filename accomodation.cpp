@@ -10,7 +10,7 @@ Accomodation::Accomodation(int d, int m, int y, Customer* c, Room* r, bool gr, O
 	: Order{ Date{d, m, y }, c, n } {
 		room = r;
 		garage = gr;
-		cout << "New Accomodation" << endl;
+		// cout << "New Accomodation" << endl;
 }
 
 Accomodation::~Accomodation() {

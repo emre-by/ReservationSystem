@@ -7,7 +7,7 @@ using namespace std;
 
 Breakfast::Breakfast(Date d, Customer* c, Order* n)
 : Order {d, c, n} {
-	cout << "Breakfast created" << endl;
+	// cout << "Breakfast created" << endl;
 }
 
 Breakfast::~Breakfast() {

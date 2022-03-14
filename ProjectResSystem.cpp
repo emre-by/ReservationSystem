@@ -15,7 +15,7 @@ using namespace std;
 Customer* searchCustomer(const string& name) {
 	for (Customer* x = customer; x != nullptr; x = x->get_next() ) {
 		if (x->get_name() == name) {
-			cout << "Customer found" << endl;
+			// cout << "Customer found" << endl;
 			return x;
 		}
 	}
@@ -26,8 +26,6 @@ Customer* searchCustomer(const string& name) {
 Room* searchFreeRoom(Date date, unsigned int beds) {
 	Room* roomToReturn = nullptr;
 	unsigned int counter = 0;
-	// unsigned int i = 0;
-	// unsigned int j = 0;
 
 	Room* copyRooms[numberOfRooms];
 
@@ -48,7 +46,7 @@ Room* searchFreeRoom(Date date, unsigned int beds) {
 			if ((x->get_bookedFor() == date) && (x->get_price() > 30.0))
 				counter += 1;
 		}
-		cout << "Number of room orders: " << counter << " on given date: " << date << endl;
+		// cout << "Number of room orders: " << counter << " on given date: " << date << endl;
 
 		if (counter == numberOfRooms) {
 			cout << "Search free room did not find any empty rooms" << endl;
@@ -94,20 +92,20 @@ char printMenu() {
 }
 
 void newCustomer() {
-	string customerName;
-	string customerPhone;
-
+	cin.ignore();
+	string cName;
+	string cPhone;
 	cout << "Creating new Customer\n";
 
-	cout << "Name of customer:\n";
-	cin >> customerName;
+	cout << "name of customer: ";
+	getline(cin, cName);
 
-	cout << "Phone number:\n";
-	cin >> customerPhone;
+	cout << "Phone number: ";
+	getline(cin, cPhone);
 
-	customer = new Customer{ customerName, customerPhone, customer };
-	cout << "Currently created customer: " << endl;
-	cout << customer->get_name() << endl;
+	customer = new Customer{ cName, cPhone, customer };
+	// cout << "Currently created customer: " << endl;
+	// cout << customer->get_name() << endl;
 }
 
 void printAllCustomers() {
@@ -129,7 +127,7 @@ void printAllCustomers() {
 }
 
 void accomodationBooking() {
-
+	cin.ignore();
 	string customerName;
 	Date d;
 	char r, b, g;
@@ -137,16 +135,17 @@ void accomodationBooking() {
 	bool gr;
 
 	cout << "for which customer name: ";
-	cin >> customerName;
+	// cin >> customerName;
+	getline(cin, customerName);
 
 	Customer* cx = searchCustomer(customerName);
 
 	if (cx != nullptr) {
-		// cout << "customer found" << endl;
+		cout << "for which date: ";
 		cin >> d;
-		cout << d << endl;
+		// cout << d << endl;
 
-		cout << "d for double room, s for single room: " << endl;
+		cout << "d for double room, s for single room: ";
 		cin >> r;
 
 		switch (r) {
@@ -159,7 +158,7 @@ void accomodationBooking() {
 		}
 
 		if (available) {
-			cout << "Room is available" << endl;
+			// cout << "Room is available" << endl;
 			
 			cout << "b for breakfast, w for without: ";
 			cin >> b;
@@ -181,7 +180,10 @@ void accomodationBooking() {
 					}
 					break;
 				case 's':
-					order = new Single{ d.get_day(), d.get_month(), d.get_year(), cx, available, gr, order };
+					if ( available->get_beds() == 2 )
+						order = new Double{ d.get_day(), d.get_month(), d.get_year(), cx, available, gr, order, 1 };
+					else
+						order = new Single{ d.get_day(), d.get_month(), d.get_year(), cx, available, gr, order };
 					if (b == 'b')
 						order = new Breakfast {d, cx, order};
 					break;
@@ -195,20 +197,22 @@ void accomodationBooking() {
 }
 
 void breakfastBooking() {
+	cin.ignore();
 	Date d;
 	string customerName;
 
 	cout << "for which customer name: ";
-	cin >> customerName;
+	// cin >> customerName;
+	getline(cin, customerName);
 
 	Customer* cx = searchCustomer(customerName);
 
 	if (cx != nullptr) {
+		cout << "for which date: ";
 		cin >> d;
-		cout << d << endl;
+		// cout << d << endl;
+		order = new Breakfast { d, cx, order };
 	}
-
-	order = new Breakfast { d, cx, order };
 }
 
 void showAllOrders() {
@@ -216,55 +220,34 @@ void showAllOrders() {
 	cout << "LIST OF ALL ORDERS" << endl;
 	for (Order* x = order; x != nullptr; x = x->get_next()) {
 		x->print();
-		//x->printInfo();
-		cout << *(x->get_customer());
-		//cout << "Room pointer: " << x->get_room() << endl;
-		cout << endl;
 	}
 	cout << "#######################" << endl;
+
+	/*
+	for (Order* x = order; x != nullptr; x = x->get_next()) {
+		if (x->get_price() != 9.9) {
+			x->print();
+			for (Order* y = order; y != nullptr; y = y->get_next()) {
+				if ((x->get_customer() == y->get_customer()) && (y->get_price() == 9.9))
+					y->print();
+			}
+		}
+	}*/
 }
-void menuButtons() {}
+
+void deleteHeapObjects() {
+	for (Customer* x = customer; x != nullptr; x = x->get_next() )
+		delete x;
+	customer = nullptr;
+
+	for (Order* x = order; x != nullptr; x = x->get_next() )
+		delete x;
+	order = nullptr;
+}
 
 int main() {
 
-	// Class tests
-	/*
-	cout << "numberOfRooms = " << numberOfRooms << endl;
-	cout << "Hotel = " << hotel << endl;
-	cout << "Rooms = " << rooms << endl;
-	cout << "Order = " << orders << endl;
-
-	Customer d{ "Mehmet", "123" };
-	Customer y{ "Max", "123", &x };
-	Customer z{ "Mustermann", "123", &y };
-	Customer k{ "XYZ", "123", &z };
-	cout << k.get_next() << endl; 
-	cout << &k << endl;
-
-	cout << k.get_next()->get_name() << endl; 
-
-	//Customer* c = searchCustomer("Emre", CustomerListGlobal);
-	//cout << x.counter << endl;
-	*/
-
-	/*
-	Room r1{ 1, 1, 0 };
-	r1.print();
-	*/
-
-	/*
-	Customer x{ "Emre", "123" };
-	Date d1{ 10, 2, 2020 };
-	Breakfast b{d1, &x};
-	b.print();
-
-	Room r(101, 2, 0);
-
-	Single a{1, 1, 2010, &x, &r};
-	a.print();
-	*/
 	// ############## CREATE ROOMS  ############## 
-	
 	for (int i = 0; i < (numberOfRooms / 2); i++) {
 		rooms[i] = new Room{ 1, 1, 0 };
 	}
@@ -278,12 +261,6 @@ int main() {
 		rooms[k]->print();
 		cout << endl;
 	}
-
-	// Printing number of beds
-	/*
-	for (auto c : rooms)
-		cout << c->get_beds() << endl;
-	*/
 
 	// ############## MENU PRINT  ############## 
 	char option;
@@ -318,31 +295,7 @@ int main() {
 			}
 	} while(!(option == 'e'));
 
-	/*
-	newCustomer();
-	newCustomer();
-	newCustomer();
-	newCustomer();
-	newCustomer();
-	*/
-
-	/*
-	cout << "Let's check customers: " << endl;
-	cout << "Pointer of customer: " << customer << endl;
-	cout << "Cout of customer" << *customer;
-
-	cout << "Pointer of next customer: " << customer->get_next() << endl;
-	cout << "Cout of next custumer: " << *(customer->get_next());
-	*/
-
-	/*
-	printAllCustomers();
-
-	Customer* searchPtr;
-	searchPtr = searchCustomer("emre");
-
-	cout << *searchPtr;
-	*/
+	deleteHeapObjects();
 
 	return 0;
 }

@@ -6,9 +6,9 @@
 using namespace std;
 
 // ############ Double Class ####################
-Double::Double(int d, int m, int y, Customer* c, Room* r, bool gr, Order* n)
-: Accomodation {  d, m, y, c,  r, gr, n  } {
-	cout << "New Double Room" << endl;
+Double::Double(int d, int m, int y, Customer* c, Room* r, bool gr, Order* n, int bb)
+: Accomodation {  d, m, y, c,  r, gr, n  }, bookedBeds {bb} {
+	// cout << "New Double Room" << endl;
 	if (r->get_beds() < 2)
 		cout << "additional bed required" << endl;
 }
@@ -18,14 +18,21 @@ Double::~Double() {
 }
 
 double Double::get_price() {
-	return 69.0 + this->priceForParking();
+	if (this->bookedBeds == 1)
+		return 49.0 + this->priceForParking();
+	else
+		return 69.0 + this->priceForParking();
 }
 
 void Double::print() {
-	cout << "Printing double" << endl;
 	cout << fixed << setprecision(2);
 	cout << this->get_bookedFor() << setw(10)  << this->get_price() << " EUR: ";
 	this->get_room()->print();
 	if (this->priceForParking() != 0)
-		cout << ", garage " << endl;
+		cout << ", garage";
+	if (this->bookedBeds == 2)
+		cout << " (as double)";
+	else
+		cout << " (as single)";
+	cout << endl;
 }

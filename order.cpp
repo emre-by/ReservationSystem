@@ -8,7 +8,7 @@ using namespace std;
 Order::Order(Date d, Customer* c, Order* n)
 : bookedfor{d}, customer{c}, next{n} {
 	bill = nullptr;
-	cout << "New Order" << endl;
+	// cout << "New Order" << endl;
 };
 
 Order::~Order() {
